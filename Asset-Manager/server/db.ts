@@ -27,7 +27,7 @@ const hasPgParams =
   process.env.PGPASSWORD;
 
 if (!connectionString && !hasPgParams) {
-  throw new Error(
+  console.warn(
     "Database config missing. Set DATABASE_URL (preferred) or PGHOST/PGUSER/PGDATABASE/PGPORT/PGPASSWORD.",
   );
 }

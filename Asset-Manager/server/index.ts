@@ -21,6 +21,9 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
+// Health check endpoint - must be early to avoid auth/session middleware
+app.get("/health", (_, res) => res.status(200).send("ok"));
+
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",

@@ -1,8 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { type Express } from "express";
-import session from "express-session";
-import { scrypt, randomBytes, timingSafeEqual } from "crypto";
+import { scrypt, randomBytes, timingSafeEqual } from "crypto"
 import { promisify } from "util";
 import { storage } from "./storage";
 import { User } from "@shared/schema";
@@ -30,16 +29,6 @@ export function setupAuth(app: Express) {
   }
 
   app.use(passport.initialize());
-  if (process.env.NODE_ENV !== "production") {
-    app.use(
-      session({
-        secret: process.env.SESSION_SECRET || "dev-secret",
-        resave: false,
-        saveUninitialized: false,
-      }),
-    );
-    app.use(passport.session());
-  }
 
   passport.use(
     new LocalStrategy(async (username, password, done) => {
@@ -91,14 +80,18 @@ export function setupAuth(app: Express) {
 
   // Seed Admin User
   (async () => {
-    const admin = await storage.getUserByUsername("admin");
-    if (!admin) {
-      const hashedPassword = await hashPassword("abhinavyadav751910");
-      await storage.createUser({
-        username: "admin",
-        password: hashedPassword,
-      });
-      console.log("Admin user created with configured password");
+    try {
+      const admin = await storage.getUserByUsername("admin");
+      if (!admin) {
+        const hashedPassword = await hashPassword("abhinavyadav751910");
+        await storage.createUser({
+          username: "admin",
+          password: hashedPassword,
+        });
+        console.log("Admin user created with configured password");
+      }
+    } catch (err) {
+      console.error("Failed to seed admin user:", err);
     }
   })();
 }
