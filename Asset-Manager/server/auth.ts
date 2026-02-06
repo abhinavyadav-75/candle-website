@@ -23,20 +23,23 @@ async function comparePasswords(supplied: string, stored: string) {
 }
 
 export function setupAuth(app: Express) {
-  const sessionSettings: session.SessionOptions = {
-    secret: process.env.SESSION_SECRET || "r3pl1t_s3cr3t_k3y",
-    resave: false,
-    saveUninitialized: false,
-    store: storage.sessionStore,
-  };
+  const isProduction = process.env.NODE_ENV === "production";
 
-  if (app.get("env") === "production") {
+  if (isProduction) {
     app.set("trust proxy", 1);
   }
 
-  app.use(session(sessionSettings));
   app.use(passport.initialize());
-  app.use(passport.session());
+  if (process.env.NODE_ENV !== "production") {
+    app.use(
+      session({
+        secret: process.env.SESSION_SECRET || "dev-secret",
+        resave: false,
+        saveUninitialized: false,
+      }),
+    );
+    app.use(passport.session());
+  }
 
   passport.use(
     new LocalStrategy(async (username, password, done) => {
