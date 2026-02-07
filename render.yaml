@@ -1,10 +1,7 @@
 services:
   - type: web
     name: candle-website
-    runtime: node
-    rootDir: Asset-Manager
-    buildCommand: npm install && npm run build
-    startCommand: npm run start
+    runtime: docker
     envVars:
       - key: NODE_ENV
         value: production
