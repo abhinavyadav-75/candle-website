@@ -1,9 +1,20 @@
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
+import session from "express-session";
+import passport from "passport";
 import { createServer } from "http";
 
 const app = express();
 const httpServer = createServer(app);
+
+// Admin login route using passport local strategy
+app.post(
+  "/admin/login",
+  passport.authenticate("local", {
+    successRedirect: "/admin/dashboard",
+    failureRedirect: "/admin/login?error=true",
+  })
+);
 
 declare module "http" {
   interface IncomingMessage {
@@ -11,13 +22,28 @@ declare module "http" {
   }
 }
 
+
 app.use(
   express.json({
     verify: (req, _res, buf) => {
       req.rawBody = buf;
     },
-  }),
+  })
 );
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET!,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Railway = false
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.urlencoded({ extended: false }));
 
