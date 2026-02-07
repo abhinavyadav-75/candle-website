@@ -7,4 +7,9 @@ export default defineConfig({
   dbCredentials: {
     url: process.env.DATABASE_URL || "",
   },
+  compilerOptions: {
+    types: ["node"],
+  },
+  // 🔥 THIS LINE IS MUST
+  // (req, res, next);
 });
