@@ -26,7 +26,9 @@ const hasPgParams =
   process.env.PGPORT ||
   process.env.PGPASSWORD;
 
-if (!connectionString && !hasPgParams) {
+const hasDbConfig = connectionString || hasPgParams;
+
+if (!hasDbConfig) {
   console.warn(
     "Database config missing. Set DATABASE_URL (preferred) or PGHOST/PGUSER/PGDATABASE/PGPORT/PGPASSWORD.",
   );
@@ -34,14 +36,16 @@ if (!connectionString && !hasPgParams) {
 
 const poolConfig = connectionString
   ? { connectionString, ssl: sslConfig }
-  : {
+  : hasPgParams
+  ? {
       host: process.env.PGHOST,
       user: process.env.PGUSER,
       password: process.env.PGPASSWORD,
       database: process.env.PGDATABASE,
       port: process.env.PGPORT ? Number(process.env.PGPORT) : undefined,
       ssl: sslConfig,
-    };
+    }
+  : { connectionString: "postgresql://localhost:5432/placeholder" };
 
 export const pool = new Pool(poolConfig);
 export const db = drizzle(pool, { schema });
