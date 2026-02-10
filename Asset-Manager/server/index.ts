@@ -2,7 +2,7 @@ import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import session from "express-session";
 import passport from "passport";
-import { createServer } from "http";
+import { createServer, IncomingMessage } from "http";
 
 const app = express();
 const httpServer = createServer(app);
@@ -16,9 +16,10 @@ app.post(
   })
 );
 
+
 declare module "http" {
   interface IncomingMessage {
-    rawBody: unknown;
+    rawBody?: unknown;
   }
 }
 
@@ -48,7 +49,9 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
 // Health check endpoint - must be early to avoid auth/session middleware
-app.get("/health", (_, res) => res.status(200).send("ok"));
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
