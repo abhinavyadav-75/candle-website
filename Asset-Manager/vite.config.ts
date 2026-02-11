@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-// @ts-ignore: plugin types resolution can be skipped in this environment
 import react from "@vitejs/plugin-react";
 import path from "path";
 // @ts-ignore
