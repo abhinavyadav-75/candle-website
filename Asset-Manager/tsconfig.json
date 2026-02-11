@@ -7,7 +7,7 @@
     "module": "ES2020",
     "esModuleInterop": true,
     "strict": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "skipLibCheck": true,
     "baseUrl": ".",
     "jsx": "react-jsx",
