@@ -1,14 +1,15 @@
 import bcrypt from "bcrypt";
-import { User } from "./models/User";
+import { type InsertUser } from "@shared/schema";
+import { storage } from "../storage";
 
 async function createAdminUser() {
   const hash = await bcrypt.hash("admin123", 10);
 
-  await User.create({
+  const adminUser: InsertUser = {
     username: "admin",
-    password: hash,
-    role: "admin",
-  });
+    password: hash
+  };
+  await storage.createUser(adminUser);
   console.log("Admin user created");
 }
 

@@ -80,36 +80,38 @@ export function registerObjectStorageRoutes(app: Express): void {
    */
   app.post("/api/uploads/file", upload.single("file"), async (req, res) => {
     try {
-      if (!req.file) {
+      // Type assertion to include file property from multer
+      const reqWithFile = req as any;
+      if (!reqWithFile.file) {
         return res.status(400).json({ error: "No file provided" });
       }
 
       const privateObjectDir = objectStorageService.getPrivateObjectDir();
       const objectId = randomUUID();
       const fullPath = `${privateObjectDir}/uploads/${objectId}`;
-      
+
       // Parse the bucket and object name using the same method as getObjectEntityUploadURL
       const { bucketName, objectName } = parseObjectPath(fullPath);
-      
+
       // Upload to Google Cloud Storage
       const bucket = objectStorageClient.bucket(bucketName);
       const file = bucket.file(objectName);
-      
-      await file.save(req.file.buffer, {
-        contentType: req.file.mimetype,
+
+      await file.save(reqWithFile.file.buffer, {
+        contentType: reqWithFile.file.mimetype,
         metadata: {
-          originalName: req.file.originalname,
+          originalName: reqWithFile.file.originalname,
         },
       });
-      
+
       const objectPath = `/objects/uploads/${objectId}`;
-      
+
       res.json({
         objectPath,
         metadata: {
-          name: req.file.originalname,
-          size: req.file.size,
-          contentType: req.file.mimetype,
+          name: reqWithFile.file.originalname,
+          size: reqWithFile.file.size,
+          contentType: reqWithFile.file.mimetype,
         },
       });
     } catch (error) {

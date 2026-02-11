@@ -18,13 +18,11 @@ export const messages = pgTable("messages", {
 });
 
 export const insertConversationSchema = createInsertSchema(conversations).omit({
-  id: true,
-  createdAt: true,
+  // id and createdAt omitted for insert schema
 });
 
 export const insertMessageSchema = createInsertSchema(messages).omit({
-  id: true,
-  createdAt: true,
+  // id and createdAt omitted for insert schema
 });
 
 export type Conversation = typeof conversations.$inferSelect;

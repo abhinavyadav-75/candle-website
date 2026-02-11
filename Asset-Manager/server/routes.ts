@@ -342,7 +342,7 @@ export async function registerRoutes(
       res.status(201).json(product);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: err.errors[0].message });
+        return res.status(400).json({ message: err.issues[0]?.message });
       }
       throw err;
     }
@@ -356,7 +356,7 @@ export async function registerRoutes(
       res.json(product);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: err.errors[0].message });
+        return res.status(400).json({ message: err.issues[0].message });
       }
       return res.status(404).json({ message: "Product not found" });
     }
@@ -374,7 +374,7 @@ export async function registerRoutes(
       res.json(product);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: err.errors[0].message });
+        return res.status(400).json({ message: err.issues[0].message });
       }
       return res.status(500).json({ message: "Failed to update product" });
     }
@@ -499,7 +499,7 @@ export async function registerRoutes(
       res.status(201).json({ ...order, whatsappNotifyUrl });
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: err.errors[0].message });
+        return res.status(400).json({ message: err.issues[0].message });
       }
       console.error('Order creation error:', err);
       return res.status(500).json({ message: "Failed to create order" });
@@ -784,7 +784,7 @@ export async function registerRoutes(
       res.status(201).json(coupon);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: err.errors[0].message });
+        return res.status(400).json({ message: err.issues[0].message });
       }
       return res.status(500).json({ message: "Failed to create coupon" });
     }
@@ -829,7 +829,7 @@ export async function registerRoutes(
       res.status(201).json(review);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: err.errors[0].message });
+        return res.status(400).json({ message: err.issues[0].message });
       }
       return res.status(500).json({ message: "Failed to submit review" });
     }
@@ -877,7 +877,7 @@ export async function registerRoutes(
       res.status(201).json(discount);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: err.errors[0].message });
+        return res.status(400).json({ message: err.issues[0].message });
       }
       return res.status(500).json({ message: "Failed to create bulk discount" });
     }
@@ -925,7 +925,7 @@ export async function registerRoutes(
       res.status(201).json(sale);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: err.errors[0].message });
+        return res.status(400).json({ message: err.issues[0].message });
       }
       return res.status(500).json({ message: "Failed to create flash sale" });
     }

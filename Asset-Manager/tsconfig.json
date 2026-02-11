@@ -1,14 +1,18 @@
 {
-  "include": ["client/src/**/*", "shared/**/*", "server/**/*"],
+  "include": ["shared/**/*", "server/**/*"],
   "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
   "compilerOptions": {
     "outDir": "dist",
     "target": "ES2020",
-    "module": "CommonJS",
+    "module": "ES2020",
     "esModuleInterop": true,
     "strict": false,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
     "baseUrl": ".",
+    "jsx": "react-jsx",
     "paths": {
+      "@/*": ["client/src/*"],
       "@shared/*": ["shared/*"]
     }
   }

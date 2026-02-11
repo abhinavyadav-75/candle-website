@@ -9,7 +9,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
 });
 
-export const insertUserSchema = createInsertSchema(users).omit({ id: true });
+export const insertUserSchema = (createInsertSchema(users) as any).omit(["id"] as const);
 
 // Products
 export const products = pgTable("products", {
@@ -26,10 +26,7 @@ export const products = pgTable("products", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertProductSchema = createInsertSchema(products).omit({ 
-  id: true, 
-  createdAt: true 
-});
+export const insertProductSchema = (createInsertSchema(products) as any).omit(["id", "createdAt"] as const);
 
 // Coupons
 export const coupons = pgTable("coupons", {
@@ -46,11 +43,7 @@ export const coupons = pgTable("coupons", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertCouponSchema = createInsertSchema(coupons).omit({ 
-  id: true, 
-  createdAt: true,
-  usedCount: true 
-});
+export const insertCouponSchema = (createInsertSchema(coupons) as any).omit(["id", "createdAt", "usedCount"] as const);
 
 // Orders
 export const orders = pgTable("orders", {
@@ -80,10 +73,7 @@ export const orders = pgTable("orders", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertOrderSchema = createInsertSchema(orders).omit({ 
-  id: true, 
-  createdAt: true 
-});
+export const insertOrderSchema = (createInsertSchema(orders) as any).omit(["id", "createdAt"] as const);
 
 // Types
 export type User = typeof users.$inferSelect;
@@ -130,7 +120,7 @@ export const siteSettings = pgTable("site_settings", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const insertSiteSettingSchema = createInsertSchema(siteSettings).omit({ id: true, updatedAt: true });
+export const insertSiteSettingSchema = (createInsertSchema(siteSettings) as any).omit(["id", "updatedAt"] as const);
 export type SiteSetting = typeof siteSettings.$inferSelect;
 export type InsertSiteSetting = z.infer<typeof insertSiteSettingSchema>;
 
@@ -146,7 +136,7 @@ export const reviews = pgTable("reviews", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertReviewSchema = createInsertSchema(reviews).omit({ id: true, createdAt: true, isApproved: true });
+export const insertReviewSchema = (createInsertSchema(reviews) as any).omit(["id", "createdAt", "isApproved"] as const);
 export type Review = typeof reviews.$inferSelect;
 export type InsertReview = z.infer<typeof insertReviewSchema>;
 
@@ -160,7 +150,7 @@ export const bulkDiscounts = pgTable("bulk_discounts", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertBulkDiscountSchema = createInsertSchema(bulkDiscounts).omit({ id: true, createdAt: true });
+export const insertBulkDiscountSchema = (createInsertSchema(bulkDiscounts) as any).omit(["id", "createdAt"] as const);
 export type BulkDiscount = typeof bulkDiscounts.$inferSelect;
 export type InsertBulkDiscount = z.infer<typeof insertBulkDiscountSchema>;
 
@@ -177,7 +167,7 @@ export const flashSales = pgTable("flash_sales", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertFlashSaleSchema = createInsertSchema(flashSales).omit({ id: true, createdAt: true });
+export const insertFlashSaleSchema = (createInsertSchema(flashSales) as any).omit(["id", "createdAt"] as const);
 export type FlashSale = typeof flashSales.$inferSelect;
 export type InsertFlashSale = z.infer<typeof insertFlashSaleSchema>;
 

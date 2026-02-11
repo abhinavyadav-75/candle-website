@@ -91,7 +91,7 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const { registerRoutes } = await import("./routes");
+  const { registerRoutes } = await import("./routes.js");
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
@@ -111,10 +111,10 @@ app.use((req, res, next) => {
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
   if (process.env.NODE_ENV === "production") {
-    const { serveStatic } = await import("./static");
+    const { serveStatic } = await import("./static.js");
     serveStatic(app);
   } else {
-    const { setupVite } = await import("./vite");
+    const { setupVite } = await import("./vite.js");
     await setupVite(httpServer, app);
   }
 
