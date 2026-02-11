@@ -56,7 +56,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border;
   }
   
   html {
@@ -64,13 +64,12 @@
   }
   
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply antialiased;
     font-family: 'Montserrat', sans-serif;
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
-    @apply font-normal tracking-tight;
   }
 }
 
@@ -225,7 +224,7 @@
 
 /* Image Effects */
 .image-hover-zoom {
-  @apply transition-all duration-700 ease-out;
+  @apply transition-all duration-700;
   filter: brightness(0.95) saturate(1.05);
 }
 
